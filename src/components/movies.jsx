@@ -10,6 +10,7 @@ function Movies() {
   const [genres, setGenres] = useState([]);
   const [pageSize] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedGenre, setSelectedGenre] = useState();
 
   useEffect(() => {
     setMovies(getMovies);
@@ -22,7 +23,7 @@ function Movies() {
     setMovies(movies.filter((m) => m._id !== movie._id));
   };
   const handleGenreSelect = (genre) => {
-    console.log(genre);
+    setSelectedGenre(genre);
   };
   const { length: count } = movies;
   if (count === 0) return <p>There are no movies in the database</p>;
@@ -40,6 +41,7 @@ function Movies() {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+  <ListGroup items={genres} onItemSelect={handleGenreSelect} />;
 
   return (
     <div className="row">
@@ -48,6 +50,7 @@ function Movies() {
           items={genres}
           textProperty="name"
           valueProperty="_id"
+          selectedItem={selectedGenre}
           onItemSelect={handleGenreSelect}
         />
       </div>
