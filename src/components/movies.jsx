@@ -21,7 +21,9 @@ function Movies() {
   const handleDelete = (movie) => {
     setMovies(movies.filter((m) => m._id !== movie._id));
   };
-
+  const handleGenreSelect = (genre) => {
+    console.log(genre);
+  };
   const { length: count } = movies;
   if (count === 0) return <p>There are no movies in the database</p>;
 
@@ -34,9 +36,6 @@ function Movies() {
       })
     );
   };
-  const handleGenreSelect = (genre) => {
-    console.log(genre);
-  };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -45,9 +44,13 @@ function Movies() {
   return (
     <div className="row">
       <div className="col-2">
-        <ListGroup items={genres} onItemSelect={handleGenreSelect} />
+        <ListGroup
+          items={genres}
+          textProperty="name"
+          valueProperty="_id"
+          onItemSelect={handleGenreSelect}
+        />
       </div>
-
       <div className="col">
         <p>Showing {count} movie in the database</p>
         <table className="table">
