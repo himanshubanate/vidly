@@ -1,14 +1,22 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { getMovies } from "./../services/fakeMovieService";
 import Pagination from "./common/pagination";
-import {Paginate, paginate} from './utils/paginate';
+import { Paginate, paginate } from "./utils/paginate";
 import Like from "./like";
+import ListGroup from "./common/listGroup";
+import { getGenres } from "../services/fakeGenreService";
 function Movies() {
-  const [movies, setMovies] = useState(getMovies);
+  const [movies, setMovies] = useState([]);
+  const [genres, setGenres] = useState([]);
   const [pageSize] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const allMovies = Paginate(movies, currentPage,pageSize);
+  useEffect(() => {
+    setMovies(getMovies);
+    setGenres(getGenres);
+  }, []);
+
+  const allMovies = Paginate(movies, currentPage, pageSize);
 
   const handleDelete = (movie) => {
     setMovies(movies.filter((m) => m._id !== movie._id));
