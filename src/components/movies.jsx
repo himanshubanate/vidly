@@ -10,20 +10,27 @@ function Movies() {
   const [genres, setGenres] = useState([]);
   const [pageSize] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedGenre, setSelectedGenre] = useState();
 
+  const allGenres = { _id: 0, name: "All Genres" };
+  const [selectedGenre, setSelectedGenre] = useState(allGenres);
   useEffect(() => {
     setMovies(getMovies);
-    setGenres(getGenres);
+    setGenres([allGenres, ...getGenres()]);
   }, []);
 
-  const allMovies = Paginate(movies, currentPage, pageSize);
+  const filtered =
+    selectedGenre && selectedGenre._id
+      ? movies.filter((m) => m.genre._id === selectedGenre._id)
+      : movies;
+
+  const allMovies = Paginate(filtered, currentPage, pageSize);
 
   const handleDelete = (movie) => {
     setMovies(movies.filter((m) => m._id !== movie._id));
   };
   const handleGenreSelect = (genre) => {
     setSelectedGenre(genre);
+    setCurrentPage(1);
   };
   const { length: count } = movies;
   if (count === 0) return <p>There are no movies in the database</p>;
